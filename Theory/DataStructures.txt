@@ -7,6 +7,9 @@ Arrays:
   * Read - O(1)
   * Insert - O(n)
   * Delete - O(n)
+- DOESN'T USE ANYTHING: pop, sort, reverse
+- USES ITEM: append, insert, index, count, remove
+- USES KEY: pop, insert, del (del list[i])
 
 Linked lists:
 - similar to arrays, difference being how they are stored in memory
@@ -24,6 +27,12 @@ Hash maps:
   * Read - O(1)
   * Insert - O(1)
   * Delete - O(1)
+
+- NOTES:
+  - If your problem has any iterative insertion of variables NEVER USE ARRAYS, rather translate it to a hash map (forloop = O(n), array = O(n), hash = O(1))
+  - A set is a combination of a hash and a list, it acts as a mathematical set: it doesn't allow for duplicates, you can intersect, unionize, differentiate
+  - .get() is useful for when you don't want to check if a key exists, but just return a value ( hash.get(1, 0) returns 0 if key 1 doesn't exist )
+  - when iterating or checking if an element exists, it always checks the KEYS, NOT THE VALUES
 
 Stacks:
 - stack of plates (first at the bottom, last at the top)
