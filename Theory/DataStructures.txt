@@ -32,7 +32,8 @@ Hash maps:
   - If your problem has any iterative insertion of variables NEVER USE ARRAYS, rather translate it to a hash map (forloop = O(n), array = O(n), hash = O(1))
   - A set is a combination of a hash and a list, it acts as a mathematical set: it doesn't allow for duplicates, you can intersect, unionize, differentiate
   - .get() is useful for when you don't want to check if a key exists, but just return a value ( hash.get(1, 0) returns 0 if key 1 doesn't exist )
-  - when iterating or checking if an element exists, it always checks the KEYS, NOT THE VALUES
+  - When iterating or checking if an element exists, it always checks the KEYS, NOT THE VALUES
+  - Using Counter(list), counts the instances of each element, makes them a key, asings them the value based on number of their iterations
 
 Stacks:
 - stack of plates (first at the bottom, last at the top)
