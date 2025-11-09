@@ -1,0 +1,117 @@
+#SUFFIX ARRAY
+
+s = ababba
+Write all suffixes (taking away the 0th index) of s:
+
+    ababba
+    babba
+    abba
+    bba
+    ba
+    a
+    ''
+
+Sort the suffixes in lexicographical order (like how they would be in a dictionary):
+  
+    ''
+    a
+    ababba
+    abba
+    ba
+    babba
+    bba
+  
+This is called a suffix array, if we store them like this in a string,
+the total lenght is about O(n^2), so we won't store them like this, 
+we'll store them as the index of the first letter of the suffix:
+
+    6, 5, 0, 2, 4, 1, 3  --> O(n)
+
+So how do we do this?
+
+First, preparations:
+We add the $ symbol to the end of the string (it will be lexographicly less then any other string)
+And because of that every suffix will now have a $ at the end
+
+    $
+    a$
+    ababba$
+    abba$
+    ba$
+    babba$
+    bba$
+
+Now we add other characters to the end of the string, so we get a cyclic string:
+
+    $ababba
+    a$ababb
+    ababba$
+    abba$ab
+    ba$abab
+    babba$a
+    bba$aba
+
+All the strings have the same lenght, and the order didn't change
+Now we need to make the lenght of each element the power of 2
+In our case we have a lenght of 7, so we add another element again in a cycle to get 8
+
+    $ababba$
+    a$ababba
+    ababba$a
+    abba$aba
+    ba$ababb
+    babba$ab
+    bba$abab
+
+Now we build this table by columns, each time increasing the number of columns to the
+2^k , at the end we get an sorted array of strings s[i..i+(2^k)-1]
+k = 0
+
+    $
+    a
+    a
+    a
+    b
+    b
+    b
+
+To sort this array s[i..i] we can use any sorting algo, and it will be done in O(n log n)
+Now we have to make the transition k -> k+1
+Lets imagine we have two strings with lenght of 2^(k+1), we divide them both so each half has
+lenght of 2^k:
+If A.left < B.left it means that they have a common prefix, but after comes a char that is
+not equal, so the whole A is less then B. If the two halves are equal, but in the other
+half we have the same situation, A is less then B
+A < B  <-->  A.left < B.left OR (A.left == B.left AND A.right < B.right)
+How to do it?:
+
+    $a 0
+    a$ 1
+    ab 2
+    ab 2
+    ba 3
+    ba 3
+    bb 4
+
+If we need to compare abab and abba --> 
+(2, 2) and (2, 3) --> (2, 2) < (2, 3) (left isti, right 3 je veći)
+
+
+#EXAMPLE:
+s=ababba$
+  0123456
+
+    k = 0    k = 1                  k = 3
+
+    6 $ 0    0 ab 12      01  6 0   0 abab 22      03 6 0
+    0 a 1    1 ba 21      10  5 1   1 babb 34      12 5 1
+    2 a 1    2 ab 12      12  0 2   2 abba 23      22 0 2
+    5 a 1    3 bb 22  --> 12  2 2   3 bba$ 41  --> 23 2 3
+    1 b 2    4 ba 21      21  1 3   4 ba$a 30      30 4 4
+    3 b 2    5 a$ 10      21  4 3   5 a$ab 12      34 1 5
+    4 b 2    6 $a 01      22  3 4   6 $aba 03      41 3 6
+    ^   ^                     ^ ^                     ^ ^
+    P   C                     P C                     P C
+
+Završavamo zato jer C array (equivalence classes) su svi drukčiji,
+P je solucija, suffix array
